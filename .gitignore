@@ -1,0 +1,12 @@
+.vscode
+app/__pycache__
+blog_env
+app/.env 
+controllers/__pycache__
+middlewares/__pycache__
+models/__pycache__
+routes/__pycache__
+schemas/__pycache__
+seedings/__pycache__
+utils/__pycache__
+
