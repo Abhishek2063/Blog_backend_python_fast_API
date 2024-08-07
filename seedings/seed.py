@@ -9,7 +9,7 @@ from models.posts_model import Post
 from models.comments_model import Comment
 from models.post_categories_model import Post_Category
 from models.post_tags_model import Post_Tag
-from models.user_role_assignments_model import User_Role_Assignment
+
 
 
 def seed_data():

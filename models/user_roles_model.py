@@ -14,8 +14,8 @@ class User_Role(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    user_role_assignments = relationship(
-        "User_Role_Assignment",
+    users = relationship(
+        "User",
         back_populates="user_roles",
         cascade="all, delete, delete-orphan",
     )

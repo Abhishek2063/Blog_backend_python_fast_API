@@ -3,9 +3,10 @@ uvicorn
 sqlalchemy
 pymysql
 pydantic
-bcrypt
+bcrypt==4.0.1
+passlib[bcrypt]
 python-jose
 python-dotenv
 python-multipart
 passlib
-
+pydantic[email]
