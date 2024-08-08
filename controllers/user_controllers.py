@@ -6,12 +6,13 @@ from utils.response import create_response
 from services.user_services import create_user
 from schemas.response_schemas import API_Response
 from utils.messages import USER_CREATION_FAILED
+from utils.APIRouteList import USER_CREATE_API
 
 router = APIRouter()
 
 
 @router.post(
-    "/create/",
+    USER_CREATE_API,
     response_model=API_Response,
     responses={
         400: {"model": API_Response},

@@ -6,12 +6,13 @@ from schemas.response_schemas import API_Response
 from schemas.user_login_schema import UserLogin
 from services.auth_services import login_user
 from utils.messages import INTERNAL_SERVER_ERROR, LOGIN_SUCCESSFUL
+from utils.APIRouteList import LOGIN_API
 
 router = APIRouter()
 
 
 @router.post(
-    "/login/",
+    LOGIN_API,
     response_model=API_Response,
     responses={
         400: {"model": API_Response},
