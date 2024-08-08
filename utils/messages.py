@@ -18,3 +18,13 @@ WELCOME_MESSAGE = "Welcome to Blogs API"
 # Authentication messages
 INVALID_CREDENTIALS = "Invalid Credentials"
 LOGIN_SUCCESSFUL = "Login Successful"
+
+MISSING_AUTHORIZATION_TOKEN = "Missing or invalid authorization token."
+INVALID_AUTHORIZATION_TOKEN = "Invalid authorization token."
+EXPIRED_AUTHORIZATION_TOKEN = "Authorization token has expired."
+
+
+# Pagination and sorting messages
+INVALID_SORT_FIELD = "Invalid sort field"
+INVALID_SORT_ORDER = "Invalid sort Order"
+USERS_RETRIEVED_SUCCESSFULLY = "Users retrieved successfully"

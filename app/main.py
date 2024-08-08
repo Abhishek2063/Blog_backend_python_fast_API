@@ -1,4 +1,4 @@
-from fastapi import FastAPI, status, Request
+from fastapi import FastAPI, status, Request,HTTPException
 from utils.response import create_response
 from seedings.seed import seed_data
 from routes.user_routes import router as user_router
@@ -7,10 +7,13 @@ from routes.auth_routes import router as auth_router
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from utils.messages import VALIDATION_ERROR, WELCOME_MESSAGE
+from middlewares.custom_exception_handler import custom_http_exception_handler
 
 seed_data()
 app = FastAPI()
 
+# Include custom exception handler
+app.add_exception_handler(HTTPException, custom_http_exception_handler)
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
