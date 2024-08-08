@@ -10,12 +10,9 @@ from utils.messages import (
     USER_EMAIL_ALREADY_REGISTERED,
     USER_INVALID_ROLE_ID,
 )
+from utils.commonfunction import get_user_by_email
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def get_user_by_email(db: Session, email: str):
-    return db.query(User).filter(User.email == email).first()
 
 
 def create_user(db: Session, user: UserCreate):

@@ -14,3 +14,7 @@ USER_PASSWORD_MUST_BE_STRONG = (
 INTERNAL_SERVER_ERROR = "An internal server error occurred"
 VALIDATION_ERROR = "Validation Error"
 WELCOME_MESSAGE = "Welcome to Blogs API"
+
+# Authentication messages
+INVALID_CREDENTIALS = "Invalid Credentials"
+LOGIN_SUCCESSFUL = "Login Successful"
