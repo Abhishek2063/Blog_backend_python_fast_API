@@ -1,9 +1,15 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from passlib.context import CryptContext
 from models.users_model import User
 from schemas.user_schemas import UserCreate
 from models.user_roles_model import User_Role
+from utils.response import raise_http_exception
+from utils.messages import (
+    USER_CREATED_SUCCESSFULLY,
+    USER_EMAIL_ALREADY_REGISTERED,
+    USER_INVALID_ROLE_ID,
+)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -13,21 +19,21 @@ def get_user_by_email(db: Session, email: str):
 
 
 def create_user(db: Session, user: UserCreate):
-    print("----"*50 , user , "user")
     db_user = get_user_by_email(db, email=user.email)
-    print("----"*50 , db_user , "db_user")
-    
     if db_user:
-        return HTTPException(status_code=400, detail="Email already registered")
-    print("----"*50 , db_user , "db_user")
+        return {
+            "success": False,
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "message": USER_EMAIL_ALREADY_REGISTERED,
+        }
 
-    # Check if the role exists
     role = db.query(User_Role).filter(User_Role.id == user.role_id).first()
-    
-    print("----"*50 , role , "role")
-    
     if not role:
-        raise HTTPException(status_code=400, detail="Invalid role_id")
+        return {
+            "success": False,
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "message": USER_INVALID_ROLE_ID,
+        }
 
     hashed_password = pwd_context.hash(user.password)
     db_user = User(
@@ -40,4 +46,10 @@ def create_user(db: Session, user: UserCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+
+    return {
+        "success": True,
+        "status_code": status.HTTP_201_CREATED,
+        "message": USER_CREATED_SUCCESSFULLY,
+        "data": db_user,
+    }

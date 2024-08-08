@@ -16,6 +16,6 @@ class User_Role(Base):
 
     users = relationship(
         "User",
-        back_populates="user_roles",
+        back_populates="role",
         cascade="all, delete, delete-orphan",
     )

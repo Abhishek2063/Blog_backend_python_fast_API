@@ -26,4 +26,4 @@ class User(Base):
     comments = relationship(
         "Comment", back_populates="users", cascade="all, delete, delete-orphan"
     )
-    user_roles = relationship("User_Role", back_populates="users")
+    role = relationship("User_Role", back_populates="users")
