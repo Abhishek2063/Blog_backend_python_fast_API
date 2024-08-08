@@ -30,29 +30,43 @@ To set up the project locally, follow these steps:
 
 ### Clone the repository:
 
+```bash
 git clone https://github.com/Abhishek2063/Blog_backend_python_fast_API.git
 cd Blog_backend_python_fast_API
+```
 
 ### Create a virtual environment:
+
+```bash
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
 
 ### Install the required packages:
+
+```bash
 pip install -r requirements.txt
+```
 
 ## Configuration
+
 Create a .env file in the root directory of the project and add the following environment variables:
 
+```bash
 DATABASE_URL=mysql+pymysql://<username>:<password>@<host>:<port>/<database_name>
 SECRET_KEY=<your_secret_key>
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
 
 ## Running the Application
+
 To run the application locally, use the following command:
 
+```bash
 uvicorn main:app --reload
 The application will be accessible at http://127.0.0.1:8000.
+```
 
 ## API Endpoints
 Here are the available API endpoints:
@@ -61,7 +75,7 @@ Here are the available API endpoints:
 POST /api/user/create/
 
 Request Body:
-
+```bash
 {
     "first_name": "John",
     "last_name": "Doe",
@@ -69,27 +83,30 @@ Request Body:
     "password": "password123!",
     "role_id": 1
 }
+```
 
 ### User Login
 POST /api/auth/login/
 
 Request Body:
-
+```bash
 {
     "email": "john.doe@example.com",
     "password": "password123!"
 }
+```
 
 ### Get All Users
 GET /api/user/get_all_users/
-
+```bash
 Query Parameters: sort_order, sort_by, skip, limit
 
 Example: http://127.0.0.1:8000/api/user/get_all_users/?sort_order=asc&sort_by=email&skip=0&limit=10
+```
 
 ## Dependencies
 The project dependencies are listed in requirements.txt:
-
+```bash
 fastapi
 uvicorn
 sqlalchemy
@@ -102,6 +119,7 @@ python-dotenv
 python-multipart
 passlib
 pydantic[email]
+```
 
 ## Contributing
 Contributions to this project are welcome. If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
