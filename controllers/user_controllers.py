@@ -3,10 +3,14 @@ from sqlalchemy.orm import Session
 from schemas.user_schemas import UserCreate, UserResponse
 from app.database import get_db
 from utils.response import create_response
-from services.user_services import create_user, get_users
+from services.user_services import create_user, get_user_services_by_id, get_users
 from schemas.response_schemas import API_Response
-from utils.messages import USER_CREATION_FAILED
-from utils.APIRouteList import GET_ALL_USERS_LIST_WITH_PAGINATION, USER_CREATE_API
+from utils.messages import USER_CREATION_FAILED, USER_FOUND_BY_ID_ERROR
+from utils.APIRouteList import (
+    GET_ALL_USERS_LIST_WITH_PAGINATION,
+    GET_USER_BY_ID_API,
+    USER_CREATE_API,
+)
 from models.users_model import User
 from models.user_roles_model import User_Role
 from middlewares.authentication_middleware import authenticate_user
@@ -85,4 +89,33 @@ def list_users(
             status_code=500,
             success=False,
             message=USER_CREATION_FAILED,
+        )
+
+
+@router.get(f"{GET_USER_BY_ID_API}" + "{user_id}", response_model=API_Response)
+def get_user_controller_by_id(
+    user_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(authenticate_user),  # Ensure user is authenticated
+):
+    if not isinstance(user, User):  # Check if the response is a dict (error)
+        return create_response(
+            status_code=user["status_code"],
+            success=user["success"],
+            message=user["message"],
+        )
+
+    try:
+        result = get_user_services_by_id(db, user_id)
+        return create_response(
+            status_code=result["status_code"],
+            success=result["success"],
+            message=result["message"],
+            data=result["data"],
+        )
+    except Exception as e:
+        return create_response(
+            status_code=500,
+            success=False,
+            message=USER_FOUND_BY_ID_ERROR,
         )

@@ -9,7 +9,11 @@ USER_NAME_MUST_CONTAIN_ONLY_LETTERS = "Name must contain only letters"
 USER_PASSWORD_MUST_BE_STRONG = (
     "Password must be at least 8 characters long and contain at least one letter, one number, and one special character"
 )
+USER_NOT_EXIST = "User not exist"
+USER_DATA_FOUND = "User details found"
+USER_FOUND_BY_ID_ERROR = "An error occurred while get the user by Id"
 
+ 
 # General messages
 INTERNAL_SERVER_ERROR = "An internal server error occurred"
 VALIDATION_ERROR = "Validation Error"

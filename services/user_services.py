@@ -9,16 +9,19 @@ from utils.messages import (
     INVALID_SORT_FIELD,
     INVALID_SORT_ORDER,
     USER_CREATED_SUCCESSFULLY,
+    USER_DATA_FOUND,
     USER_EMAIL_ALREADY_REGISTERED,
     USER_INVALID_ROLE_ID,
+    USER_NOT_EXIST,
     USERS_RETRIEVED_SUCCESSFULLY,
 )
-from utils.commonfunction import get_user_by_email
+from utils.commonfunction import get_user_by_email, get_user_by_id
 from sqlalchemy import asc, desc
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
+# create user services
 def create_user(db: Session, user: UserCreate):
     db_user = get_user_by_email(db, email=user.email)
     if db_user:
@@ -56,6 +59,7 @@ def create_user(db: Session, user: UserCreate):
     }
 
 
+# get all users with sorting and pagination
 def get_users(
     db: Session,
     sort_by: str = "email",
@@ -113,4 +117,21 @@ def get_users(
             "current_page": current_page,
             "users": [UserResponse.from_orm(user) for user in users],
         },
+    }
+
+
+# get the specific user details
+def get_user_services_by_id(db: Session, user_id: int):
+    user = get_user_by_id(db, user_id)
+    if not user:
+        return {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": USER_NOT_EXIST,
+        }
+    return {
+        "success": True,
+        "status_code": 200,
+        "message": USER_DATA_FOUND,
+        "data": user,
     }
