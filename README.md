@@ -25,6 +25,7 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - Retrieving all users with sorting and pagination
 - Retrieving user details by ID
 - Update user details(first_name, last_name, role) By ID
+- Update password 
 
 ## Installation
 
@@ -132,6 +133,19 @@ Request Body:
     "first_name": "John",
     "last_name": "Doe",
     "role_id": 1
+}
+```
+
+### User Update Password
+
+PUT /api/user/update_user_password_details/{user_id}
+
+Request Body:
+
+```bash
+{
+    "current_password" : "Test#1234",
+    "new_password" : "Test@1234"
 }
 ```
 
