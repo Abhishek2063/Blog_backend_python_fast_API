@@ -26,6 +26,7 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - Retrieving user details by ID
 - Update user details(first_name, last_name, role) By ID
 - Update password 
+- Delete a user by ID
 
 ## Installation
 
@@ -148,6 +149,15 @@ Request Body:
     "new_password" : "Test@1234"
 }
 ```
+
+### Delete User by ID:
+
+DELETE /api/user/delete_user/{user_id}
+
+```bash
+Example: http://127.0.0.1:8000/api/user/delete_user/1
+```
+
 
 ## Dependencies
 
