@@ -107,11 +107,19 @@ def get_user_controller_by_id(
 
     try:
         result = get_user_services_by_id(db, user_id)
+        if not result["success"]:
+            return create_response(
+                result["status_code"],
+                result["success"],
+                result["message"],
+            )
+
+        user_response = UserResponse.from_orm(result["data"])
         return create_response(
             status_code=result["status_code"],
             success=result["success"],
             message=result["message"],
-            data=result["data"],
+            data=user_response,
         )
     except Exception as e:
         return create_response(
