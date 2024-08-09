@@ -1,14 +1,24 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from schemas.user_schemas import UserCreate, UserResponse
+from schemas.user_schemas import UserCreate, UserResponse, UserUpdate
 from app.database import get_db
 from utils.response import create_response
-from services.user_services import create_user, get_user_services_by_id, get_users
+from services.user_services import (
+    create_user,
+    get_user_services_by_id,
+    get_users,
+    update_user,
+)
 from schemas.response_schemas import API_Response
-from utils.messages import USER_CREATION_FAILED, USER_FOUND_BY_ID_ERROR
+from utils.messages import (
+    USER_CREATION_FAILED,
+    USER_FOUND_BY_ID_ERROR,
+    USER_UPDATE_ERROR,
+)
 from utils.APIRouteList import (
     GET_ALL_USERS_LIST_WITH_PAGINATION,
     GET_USER_BY_ID_API,
+    UPDATE_USER_DETAILS,
     USER_CREATE_API,
 )
 from models.users_model import User
@@ -127,3 +137,41 @@ def get_user_controller_by_id(
             success=False,
             message=USER_FOUND_BY_ID_ERROR,
         )
+
+
+@router.put(f"{UPDATE_USER_DETAILS}" + "{user_id}", response_model=API_Response)
+def update_user_details(
+    user_id: int,
+    user_update: UserUpdate,
+    db: Session = Depends(get_db),
+    user: User = Depends(authenticate_user),
+):
+
+    # if not isinstance(user, User):  # Check if the response is a dict (error)
+    #     return create_response(
+    #         status_code=user["status_code"],
+    #         success=user["success"],
+    #         message=user["message"],
+    #     )
+    # try:
+        result = update_user(db, user_id, user_update)
+        if not result["success"]:
+            return create_response(
+                result["status_code"],
+                result["success"],
+                result["message"],
+            )
+
+        user_response = UserResponse.from_orm(result["data"])
+        return create_response(
+            status_code=result["status_code"],
+            success=result["success"],
+            message=result["message"],
+            data=user_response,
+        )
+    # except Exception as e:
+    #     return create_response(
+    #         status_code=500,
+    #         success=False,
+    #         message=USER_UPDATE_ERROR,
+    #     )

@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from passlib.context import CryptContext
 from models.users_model import User
-from schemas.user_schemas import UserCreate, UserResponse
+from schemas.user_schemas import UserCreate, UserResponse, UserUpdate
 from models.user_roles_model import User_Role
 from utils.response import raise_http_exception
 from utils.messages import (
@@ -13,9 +13,10 @@ from utils.messages import (
     USER_EMAIL_ALREADY_REGISTERED,
     USER_INVALID_ROLE_ID,
     USER_NOT_EXIST,
+    USER_UPDATE_SUCCESSFULLY,
     USERS_RETRIEVED_SUCCESSFULLY,
 )
-from utils.commonfunction import get_user_by_email, get_user_by_id
+from utils.commonfunction import get_role_by_id, get_user_by_email, get_user_by_id
 from sqlalchemy import asc, desc
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -31,7 +32,7 @@ def create_user(db: Session, user: UserCreate):
             "message": USER_EMAIL_ALREADY_REGISTERED,
         }
 
-    role = db.query(User_Role).filter(User_Role.id == user.role_id).first()
+    role = get_role_by_id(db,user.role_id) 
     if not role:
         return {
             "success": False,
@@ -134,4 +135,48 @@ def get_user_services_by_id(db: Session, user_id: int):
         "status_code": 200,
         "message": USER_DATA_FOUND,
         "data": user,
+    }
+
+
+# to update the user details
+
+
+def update_user(db: Session, user_id: int, user_update: UserUpdate):
+    # Fetch the user by ID
+    db_user = get_user_by_id(db, user_id)
+    if not db_user:
+        return {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": USER_NOT_EXIST,
+        }
+
+    # Validate and update the role if provided
+    if user_update.role_id:
+        role = get_role_by_id(db, user_update.role_id)
+        if not role:
+            return {
+                "success": False,
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "message": USER_INVALID_ROLE_ID,
+            }
+        db_user.role_id = user_update.role_id
+
+    # Update other fields if provided
+    if user_update.first_name:
+        db_user.first_name = user_update.first_name
+    if user_update.last_name:
+        db_user.last_name = user_update.last_name
+    if user_update.email:
+        db_user.email = user_update.email
+
+    # Commit the changes to the database
+    db.commit()
+    db.refresh(db_user)
+
+    return {
+        "success": True,
+        "status_code": status.HTTP_200_OK,
+        "message": USER_UPDATE_SUCCESSFULLY,
+        "data": db_user,
     }

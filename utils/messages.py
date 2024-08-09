@@ -32,3 +32,6 @@ EXPIRED_AUTHORIZATION_TOKEN = "Authorization token has expired."
 INVALID_SORT_FIELD = "Invalid sort field"
 INVALID_SORT_ORDER = "Invalid sort Order"
 USERS_RETRIEVED_SUCCESSFULLY = "Users retrieved successfully"
+
+USER_UPDATE_SUCCESSFULLY = "User updated successfully"
+USER_UPDATE_ERROR = "An error occurred while update by user"

@@ -30,6 +30,18 @@ class UserCreate(BaseModel):
         return v
 
 
+class UserUpdate(BaseModel):
+    first_name: Optional[constr(min_length=2, max_length=20)] = None
+    last_name: Optional[constr(min_length=2, max_length=20)] = None
+    role_id: Optional[int] = None
+
+    @validator("first_name", "last_name")
+    def name_must_contain_only_letters(cls, v):
+        if not v.replace(" ", "").isalpha():
+            raise ValueError(USER_NAME_MUST_CONTAIN_ONLY_LETTERS)
+        return v.title()
+
+
 class UserResponse(BaseModel):
     id: int
     first_name: str
