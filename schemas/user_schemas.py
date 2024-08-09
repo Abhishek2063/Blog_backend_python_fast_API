@@ -42,6 +42,27 @@ class UserUpdate(BaseModel):
         return v.title()
 
 
+class UserUpdatePassword(BaseModel):
+    current_password: constr(min_length=8)
+    new_password: constr(min_length=8)
+
+    @validator("current_password")
+    def password_must_be_strong(cls, v):
+        if not re.match(
+            r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$", v
+        ):
+            raise ValueError(USER_PASSWORD_MUST_BE_STRONG)
+        return v
+    
+    @validator("new_password")
+    def password_must_be_strong(cls, v):
+        if not re.match(
+            r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$", v
+        ):
+            raise ValueError(USER_PASSWORD_MUST_BE_STRONG)
+        return v
+
+
 class UserResponse(BaseModel):
     id: int
     first_name: str

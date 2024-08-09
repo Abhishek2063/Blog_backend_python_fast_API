@@ -2,12 +2,19 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from passlib.context import CryptContext
 from models.users_model import User
-from schemas.user_schemas import UserCreate, UserResponse, UserUpdate
+from schemas.user_schemas import (
+    UserCreate,
+    UserResponse,
+    UserUpdate,
+    UserUpdatePassword,
+)
 from models.user_roles_model import User_Role
 from utils.response import raise_http_exception
 from utils.messages import (
     INVALID_SORT_FIELD,
     INVALID_SORT_ORDER,
+    PASSWORD_NOT_MATCH,
+    PASSWORD_UPDATE_SUCCESSFULLY,
     USER_CREATED_SUCCESSFULLY,
     USER_DATA_FOUND,
     USER_EMAIL_ALREADY_REGISTERED,
@@ -16,7 +23,12 @@ from utils.messages import (
     USER_UPDATE_SUCCESSFULLY,
     USERS_RETRIEVED_SUCCESSFULLY,
 )
-from utils.commonfunction import get_role_by_id, get_user_by_email, get_user_by_id
+from utils.commonfunction import (
+    get_role_by_id,
+    get_user_by_email,
+    get_user_by_id,
+    verify_password,
+)
 from sqlalchemy import asc, desc
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -32,7 +44,7 @@ def create_user(db: Session, user: UserCreate):
             "message": USER_EMAIL_ALREADY_REGISTERED,
         }
 
-    role = get_role_by_id(db,user.role_id) 
+    role = get_role_by_id(db, user.role_id)
     if not role:
         return {
             "success": False,
@@ -178,5 +190,42 @@ def update_user(db: Session, user_id: int, user_update: UserUpdate):
         "success": True,
         "status_code": status.HTTP_200_OK,
         "message": USER_UPDATE_SUCCESSFULLY,
+        "data": db_user,
+    }
+
+
+def update_user_password(
+    db: Session, user_id: int, user_update_passowrd: UserUpdatePassword
+):
+    # Fetch the user by ID
+    db_user = get_user_by_id(db, user_id)
+    if not db_user:
+        return {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": USER_NOT_EXIST,
+        }
+
+    if verify_password(
+        user_update_passowrd.current_password, db_user.password_hash
+    ):
+        return {
+            "success": False,
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "message": PASSWORD_NOT_MATCH,
+        }
+
+    # Update password
+    hashed_password = pwd_context.hash(user_update_passowrd.current_password)
+    db_user.password = hashed_password
+
+    # Commit the changes to the database
+    db.commit()
+    db.refresh(db_user)
+
+    return {
+        "success": True,
+        "status_code": status.HTTP_200_OK,
+        "message": PASSWORD_UPDATE_SUCCESSFULLY,
         "data": db_user,
     }

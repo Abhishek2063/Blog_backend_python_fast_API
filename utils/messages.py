@@ -35,3 +35,8 @@ USERS_RETRIEVED_SUCCESSFULLY = "Users retrieved successfully"
 
 USER_UPDATE_SUCCESSFULLY = "User updated successfully"
 USER_UPDATE_ERROR = "An error occurred while update by user"
+
+PASSWORD_NOT_MATCH = "Password is incorrect"
+PASSWORD_UPDATE_SUCCESSFULLY = "Password updated successfully"
+USER_UPDATE_PASSWORD_ERROR = "An error occurred while update password by user"
+
