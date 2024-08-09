@@ -23,6 +23,7 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - User creation
 - User authentication
 - Retrieving all users with sorting and pagination
+- Retrieving user details by ID
 
 ## Installation
 
@@ -69,12 +70,15 @@ The application will be accessible at http://127.0.0.1:8000.
 ```
 
 ## API Endpoints
+
 Here are the available API endpoints:
 
 ### Create User
+
 POST /api/user/create/
 
 Request Body:
+
 ```bash
 {
     "first_name": "John",
@@ -86,9 +90,11 @@ Request Body:
 ```
 
 ### User Login
+
 POST /api/auth/login/
 
 Request Body:
+
 ```bash
 {
     "email": "john.doe@example.com",
@@ -97,15 +103,27 @@ Request Body:
 ```
 
 ### Get All Users
+
 GET /api/user/get_all_users/
+
 ```bash
 Query Parameters: sort_order, sort_by, skip, limit
 
 Example: http://127.0.0.1:8000/api/user/get_all_users/?sort_order=asc&sort_by=email&skip=0&limit=10
 ```
 
+### Get User by ID:
+
+GET /api/user/{user_id}
+
+```bash
+Example: http://127.0.0.1:8000/api/user/get_user_by_id/1
+```
+
 ## Dependencies
+
 The project dependencies are listed in requirements.txt:
+
 ```bash
 fastapi
 uvicorn
@@ -122,8 +140,9 @@ pydantic[email]
 ```
 
 ## Contributing
+
 Contributions to this project are welcome. If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
 
 ## License
-This project is licensed under the MIT License.
 
+This project is licensed under the MIT License.
