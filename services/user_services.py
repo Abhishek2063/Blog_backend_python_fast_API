@@ -17,6 +17,7 @@ from utils.messages import (
     PASSWORD_UPDATE_SUCCESSFULLY,
     USER_CREATED_SUCCESSFULLY,
     USER_DATA_FOUND,
+    USER_DELETED_SUCCESSFULLY,
     USER_EMAIL_ALREADY_REGISTERED,
     USER_INVALID_ROLE_ID,
     USER_NOT_EXIST,
@@ -206,9 +207,7 @@ def update_user_password(
             "message": USER_NOT_EXIST,
         }
 
-    if verify_password(
-        user_update_passowrd.current_password, db_user.password_hash
-    ):
+    if verify_password(user_update_passowrd.current_password, db_user.password_hash):
         return {
             "success": False,
             "status_code": status.HTTP_400_BAD_REQUEST,
@@ -228,4 +227,23 @@ def update_user_password(
         "status_code": status.HTTP_200_OK,
         "message": PASSWORD_UPDATE_SUCCESSFULLY,
         "data": db_user,
+    }
+
+
+def delete_user_by_id(db: Session, user_id: int):
+    user = get_user_by_id(db, user_id)
+    if not user:
+        return {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": USER_NOT_EXIST,
+        }
+
+    db.delete(user)
+    db.commit()
+
+    return {
+        "success": True,
+        "status_code": status.HTTP_200_OK,
+        "message": USER_DELETED_SUCCESSFULLY,
     }

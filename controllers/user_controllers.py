@@ -10,6 +10,7 @@ from app.database import get_db
 from utils.response import create_response
 from services.user_services import (
     create_user,
+    delete_user_by_id,
     get_user_services_by_id,
     get_users,
     update_user,
@@ -23,6 +24,7 @@ from utils.messages import (
     USER_UPDATE_PASSWORD_ERROR,
 )
 from utils.APIRouteList import (
+    DELETE_USER_API,
     GET_ALL_USERS_LIST_WITH_PAGINATION,
     GET_USER_BY_ID_API,
     UPDATE_USER_DETAILS,
@@ -222,4 +224,32 @@ def update_user_password_details(
             status_code=500,
             success=False,
             message=USER_UPDATE_PASSWORD_ERROR,
+        )
+
+
+@router.delete(f"{DELETE_USER_API}" + "{user_id}", response_model=API_Response)
+def delete_user_by_id_controller(
+    user_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(authenticate_user),  # Ensure user is authenticated
+):
+    if not isinstance(user, User):  # Check if the response is a dict (error)
+        return create_response(
+            status_code=user["status_code"],
+            success=user["success"],
+            message=user["message"],
+        )
+
+    try:
+        result = delete_user_by_id(db, user_id)
+        return create_response(
+            result["status_code"],
+            result["success"],
+            result["message"],
+        )
+    except Exception as e:
+        return create_response(
+            status_code=500,
+            success=False,
+            message=USER_FOUND_BY_ID_ERROR,
         )

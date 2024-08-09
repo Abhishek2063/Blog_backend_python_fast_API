@@ -40,3 +40,5 @@ PASSWORD_NOT_MATCH = "Password is incorrect"
 PASSWORD_UPDATE_SUCCESSFULLY = "Password updated successfully"
 USER_UPDATE_PASSWORD_ERROR = "An error occurred while update password by user"
 
+USER_DELETED_SUCCESSFULLY = "User deleted successfully"
+
