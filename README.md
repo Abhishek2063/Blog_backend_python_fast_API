@@ -24,6 +24,7 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - User authentication
 - Retrieving all users with sorting and pagination
 - Retrieving user details by ID
+- Update user details(first_name, last_name, role) By ID
 
 ## Installation
 
@@ -118,6 +119,20 @@ GET /api/user/{user_id}
 
 ```bash
 Example: http://127.0.0.1:8000/api/user/get_user_by_id/1
+```
+
+### User Update By ID
+
+PUT /api/user/update_user_details/{user_id}
+
+Request Body:
+
+```bash
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "role_id": 1
+}
 ```
 
 ## Dependencies
