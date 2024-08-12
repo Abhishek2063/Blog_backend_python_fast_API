@@ -12,4 +12,9 @@ GET_ROLE_BY_ID = "/get_role_by_id/"
 UPDATE_ROLE_BY_ID = "/update_role/"
 DELETE_ROLE_BY_ID = "/delete_role/"
 
+TAG_CREATE_API = "/create/"
+GET_ALL_TAG_LIST = "/get_all_tag/"
+GET_TAG_BY_ID = "/get_tag_by_id/"
+UPDATE_TAG_BY_ID = "/update_tag/"
+DELETE_TAG_BY_ID = "/delete_tag/"
 

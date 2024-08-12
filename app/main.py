@@ -4,6 +4,8 @@ from seedings.seed import seed_data
 from routes.user_routes import router as user_router
 from routes.auth_routes import router as auth_router
 from routes.role_routes import router as role_router
+from routes.tag_routes import router as tag_router
+
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from utils.messages import VALIDATION_ERROR, WELCOME_MESSAGE
@@ -38,6 +40,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 app.include_router(user_router)
 app.include_router(auth_router)
 app.include_router(role_router)
+app.include_router(tag_router)
 
 
 @app.get("/")

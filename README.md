@@ -32,6 +32,11 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - Get role by ID
 - Update role by ID
 - Delete role by ID
+- Create new tag
+- Get all tags list with pagination, sorting 
+- Get tag by ID
+- Update tag by ID
+- Delete tag by ID
 
 ## Installation
 
@@ -184,7 +189,7 @@ GET /api/user_role/get_all_role
 ```bash
 Query Parameters: sort_order, sort_by, skip, limit
 
-Example: http://127.0.0.1:8000/api/user_role/get_all_role/?sort_order=asc&sort_by=email&skip=0&limit=10
+Example: http://127.0.0.1:8000/api/user_role/get_all_role/?sort_order=asc&sort_by=name&skip=0&limit=10
 ```
 
 ### Get User Role by ID:
@@ -216,6 +221,58 @@ DELETE /api/user_role/delete_role/{role_id}
 Example: http://127.0.0.1:8000/api/user_role/delete_role/1
 ```
 
+### Create Tag
+
+POST /api/tag/create
+
+Request Body:
+
+```bash
+{
+    "name" : "AI",
+    "description" : "Artificial Intelligence related"
+}
+```
+
+
+### Get All Tags list
+
+GET /api/tag/get_all_tag
+
+```bash
+Query Parameters: sort_order, sort_by, skip, limit
+
+Example: http://127.0.0.1:8000/api/tag/get_all_tag/?sort_order=asc&sort_by=name&skip=0&limit=10
+```
+
+### Get tag by ID:
+
+GET /api/tag/get_tag_by_id/{tag_id}
+
+```bash
+Example: http://127.0.0.1:8000/api/tag/get_tag_by_id/{tag_id}
+```
+
+### Tag Update By ID
+
+PUT /api/tag/update_tag/{tag_id}
+
+Request Body:
+
+```bash
+{
+    "name" : "AI",
+    "description" : "Artificial Intelligence related"
+}
+```
+
+### Delete tag by ID:
+
+DELETE /api/tag/delete_tag/{tag_id}
+
+```bash
+Example: http://127.0.0.1:8000/api/tag/delete_tag/1
+```
 
 ## Dependencies
 
