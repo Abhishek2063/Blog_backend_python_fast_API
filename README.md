@@ -37,6 +37,11 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - Get tag by ID
 - Update tag by ID
 - Delete tag by ID
+- Create new category
+- Get all categories list with pagination, sorting 
+- Get category by ID
+- Update category by ID
+- Delete category by ID
 
 ## Installation
 
@@ -273,6 +278,60 @@ DELETE /api/tag/delete_tag/{tag_id}
 ```bash
 Example: http://127.0.0.1:8000/api/tag/delete_tag/1
 ```
+
+### Create category
+
+POST /api/category/create
+
+Request Body:
+
+```bash
+{
+    "name" : "Technology",
+    "description" : "Articles about latest tech trends"
+}
+```
+
+
+### Get All categories list
+
+GET /api/category/get_all_category
+
+```bash
+Query Parameters: sort_order, sort_by, skip, limit
+
+Example: http://127.0.0.1:8000/api/category/get_all_category/?sort_order=asc&sort_by=name&skip=0&limit=10
+```
+
+### Get category by ID:
+
+GET /api/category/get_category_by_id/{category_id}
+
+```bash
+Example: http://127.0.0.1:8000/api/category/get_category_by_id/{category_id}
+```
+
+### Category Update By ID
+
+PUT /api/category/update_category/{category_id}
+
+Request Body:
+
+```bash
+{
+    "name" : "AI",
+    "description" : "Artificial Intelligence related"
+}
+```
+
+### Delete category by ID:
+
+DELETE /api/category/delete_category/{category_id}
+
+```bash
+Example: http://127.0.0.1:8000/api/category/delete_category/1
+```
+
 
 ## Dependencies
 

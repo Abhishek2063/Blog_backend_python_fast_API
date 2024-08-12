@@ -5,6 +5,8 @@ from routes.user_routes import router as user_router
 from routes.auth_routes import router as auth_router
 from routes.role_routes import router as role_router
 from routes.tag_routes import router as tag_router
+from routes.category_routes import router as category_router
+
 
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
@@ -41,6 +43,7 @@ app.include_router(user_router)
 app.include_router(auth_router)
 app.include_router(role_router)
 app.include_router(tag_router)
+app.include_router(category_router)
 
 
 @app.get("/")

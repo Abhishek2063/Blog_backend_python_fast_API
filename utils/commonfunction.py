@@ -4,6 +4,8 @@ from models.users_model import User
 from models.user_roles_model import User_Role
 from models.tags_model import Tag
 from models.post_tags_model import Post_Tag
+from models.categories_model import Category
+from models.post_categories_model import Post_Category
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -42,3 +44,14 @@ def get_tag_by_id(db: Session, tag_id: int):
 
 def check_tag_contained_in_post_tag_table(db: Session, tag_id: int):
     return db.query(Post_Tag).filter(Post_Tag.tag_id == tag_id).first()
+
+def get_category_by_name(db: Session, name: str):
+    return db.query(Category).filter(Category.name == name).first()
+
+
+def get_category_by_id(db: Session, category_id: int):
+    return db.query(Category).filter(Category.id == category_id).first()
+
+
+def check_category_contained_in_post_Category_table(db: Session, category_id: int):
+    return db.query(Post_Category).filter(Post_Category.category_id == category_id).first()
