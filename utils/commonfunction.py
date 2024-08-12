@@ -9,11 +9,22 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
+
 def get_user_by_email(db: Session, email: str):
     return db.query(User).filter(User.email == email).first()
+
 
 def get_user_by_id(db: Session, user_id: int):
     return db.query(User).filter(User.id == user_id).first()
 
+
 def get_role_by_id(db: Session, role_id: int):
     return db.query(User_Role).filter(User_Role.id == role_id).first()
+
+
+def get_user_role_by_name(db: Session, name: str):
+    return db.query(User_Role).filter(User_Role.name == name).first()
+
+
+def check_user_role_contained_in_user_table(db: Session, role_id: int):
+    return db.query(User).filter(User.role_id == role_id).first()

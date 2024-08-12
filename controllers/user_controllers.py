@@ -85,7 +85,7 @@ def list_users(
     sort_by: str = "email",
     order: str = "asc",
     skip: int = 0,
-    limit: int = 2,
+    limit: int = 10,
     db: Session = Depends(get_db),
     user: User = Depends(authenticate_user),  # Ensure user is authenticated
 ):

@@ -27,6 +27,11 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - Update user details(first_name, last_name, role) By ID
 - Update password 
 - Delete a user by ID
+- Create new role
+- Get all roles list with pagination, sorting 
+- Get role by ID
+- Update role by ID
+- Delete role by ID
 
 ## Installation
 
@@ -156,6 +161,59 @@ DELETE /api/user/delete_user/{user_id}
 
 ```bash
 Example: http://127.0.0.1:8000/api/user/delete_user/1
+```
+
+### Create Role
+
+POST /api/user_role/create
+
+Request Body:
+
+```bash
+{
+    "name" : "admin",
+    "description" : "All permission access"
+}
+```
+
+
+### Get All User roles list
+
+GET /api/user_role/get_all_role
+
+```bash
+Query Parameters: sort_order, sort_by, skip, limit
+
+Example: http://127.0.0.1:8000/api/user_role/get_all_role/?sort_order=asc&sort_by=email&skip=0&limit=10
+```
+
+### Get User Role by ID:
+
+GET /api/user_role/get_role_by_id/{role_id}
+
+```bash
+Example: http://127.0.0.1:8000/api/user_role/get_role_by_id/{role_id}
+```
+
+### User Role Update By ID
+
+PUT /api/user_role/update_role/{role_id}
+
+Request Body:
+
+```bash
+{
+    "name" : "admin",
+    "description" : "All permission access"
+}
+```
+
+### Delete User role by ID:
+
+DELETE /api/user_role/delete_role/{role_id}
+
+```bash
+Example: http://127.0.0.1:8000/api/user_role/delete_role/1
 ```
 
 

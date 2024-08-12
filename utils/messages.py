@@ -6,14 +6,12 @@ USER_INVALID_ROLE_ID = "Invalid role_id"
 USER_CREATED_SUCCESSFULLY = "User created successfully"
 USER_CREATION_FAILED = "An error occurred while creating the user"
 USER_NAME_MUST_CONTAIN_ONLY_LETTERS = "Name must contain only letters"
-USER_PASSWORD_MUST_BE_STRONG = (
-    "Password must be at least 8 characters long and contain at least one letter, one number, and one special character"
-)
+USER_PASSWORD_MUST_BE_STRONG = "Password must be at least 8 characters long and contain at least one letter, one number, and one special character"
 USER_NOT_EXIST = "User not exist"
 USER_DATA_FOUND = "User details found"
 USER_FOUND_BY_ID_ERROR = "An error occurred while get the user by Id"
 
- 
+
 # General messages
 INTERNAL_SERVER_ERROR = "An internal server error occurred"
 VALIDATION_ERROR = "Validation Error"
@@ -42,3 +40,12 @@ USER_UPDATE_PASSWORD_ERROR = "An error occurred while update password by user"
 
 USER_DELETED_SUCCESSFULLY = "User deleted successfully"
 
+USER_ROLE_NAME_ALREADY_TAKEN = "This User role name is already created."
+USER_ROLE_CREATED_SUCCESSFULLY = "User role created successfully."
+USER_ROLES_LIST_GET_SUCCESSFULLY = "User roles list get successfully."
+USER_ROLE_NOT_EXIST = "User Role Not Exist"
+USER_ROLE_FOUND_SUCCESSFULL = "User role found successfully."
+USER_ROLE_UPDATE_SUCCESSFULLY = "User role update successfully"
+USER_ROLE_IS_CONNECTED_WITH_USER_TABLE = "Some User having this particular role."
+USER_ROLE_DELETE_SUCCESSFULLY = "User role delete successfully."
+SOMETHING_WENT_WRONG = "Something went wrong"
