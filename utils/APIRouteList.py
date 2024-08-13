@@ -34,3 +34,4 @@ DELETE_POST_BY_ID = "/delete_post_by_id/"
 
 
 
+COMMENT_CREATE_API = "/create/"

@@ -48,6 +48,7 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - Get post by ID
 - Update post by ID
 - Delete post by ID
+- Comment add on post
 
 ## Installation
 
@@ -431,6 +432,20 @@ DELETE /api/post/delete_post_by_id/{post_id}
 
 ```bash
 Example: http://127.0.0.1:8000/api/post/delete_post_by_id/1
+```
+
+### Add comment
+
+POST /api/comment/create
+
+Request Body:
+
+```bash
+{
+    "post_id" : 4,
+    "user_id" : 10,
+    "content" : "Test Comment 1"
+}
 ```
 
 ## Dependencies

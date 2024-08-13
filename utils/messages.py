@@ -78,3 +78,4 @@ POST_FOUND_SUCCESSFULL = "Post found successfully."
 POST_UPDATED_SUCCESSFULLY = "Post update successfully"
 POST_DELETED_SUCCESSFULLY = "Post delete successfully"
 
+COMMENT_CREATED_SUCCESSFULLY = "Comment created successfully."

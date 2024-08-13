@@ -7,6 +7,8 @@ from routes.role_routes import router as role_router
 from routes.tag_routes import router as tag_router
 from routes.category_routes import router as category_router
 from routes.post_routes import router as post_router
+from routes.comment_routes import router as comment_router
+
 
 
 from fastapi.responses import JSONResponse
@@ -46,6 +48,8 @@ app.include_router(role_router)
 app.include_router(tag_router)
 app.include_router(category_router)
 app.include_router(post_router)
+app.include_router(comment_router)
+
 
 
 @app.get("/")
