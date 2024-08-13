@@ -73,3 +73,8 @@ POST_NAME_ALREADY_TAKEN = "This post is already created."
 CATEGORY_NOT_FOUND = "Category not found"
 TAG_NOT_FOUND = "Tag not found"
 POST_LIST_GET_SUCCESSFULLY = "Post list get successfully."
+POST_NOT_EXIST = "Post Not Exist"
+POST_FOUND_SUCCESSFULL = "Post found successfully."
+POST_UPDATED_SUCCESSFULLY = "Post update successfully"
+POST_DELETED_SUCCESSFULLY = "Post delete successfully"
+

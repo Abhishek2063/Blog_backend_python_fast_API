@@ -9,13 +9,18 @@ from utils.messages import (
     INVALID_SORT_FIELD,
     INVALID_SORT_ORDER,
     POST_CREATED_SUCCESSFULLY,
+    POST_DELETED_SUCCESSFULLY,
+    POST_FOUND_SUCCESSFULL,
     POST_LIST_GET_SUCCESSFULLY,
     POST_NAME_ALREADY_TAKEN,
+    POST_NOT_EXIST,
+    POST_UPDATED_SUCCESSFULLY,
     TAG_NOT_FOUND,
     USER_NOT_EXIST,
 )
 from utils.commonfunction import (
     get_category_by_id,
+    get_post_by_id,
     get_post_by_title,
     get_tag_by_id,
     get_user_by_id,
@@ -265,4 +270,139 @@ def get_user_posts(
             "current_page": current_page,
             "result": post_responses,
         },
+    }
+
+
+def get_post_details_by_id(db: Session, post_id: int):
+    post_details = get_post_by_id(db, post_id)
+
+    if not post_details:
+        return {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": POST_NOT_EXIST,
+        }
+    return {
+        "success": True,
+        "status_code": 200,
+        "message": POST_FOUND_SUCCESSFULL,
+        "data": PostResponse(
+            id=post_details.id,
+            title=post_details.title,
+            content=post_details.content,
+            status=post_details.status,
+            user=UserResponse.from_orm(post_details.user),
+            categories=[
+                CategoryResponse.from_orm(pc.category) for pc in post_details.categories
+            ],
+            tags=[TagResponse.from_orm(pt.tag) for pt in post_details.tags],
+        ),
+    }
+
+
+def update_post(db: Session, post_id: int, post_update: PostCreate) -> Dict[str, Any]:
+    # Fetch the post by ID
+    db_post = get_post_by_id(db, post_id=post_id)
+
+    if not db_post:
+        return {
+            "success": False,
+            "status_code": status.HTTP_404_NOT_FOUND,
+            "message": POST_NOT_EXIST,
+        }
+
+    # Fetch the user data
+    user = get_user_by_id(db, user_id=post_update.user_id)
+    if not user:
+        return {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": USER_NOT_EXIST,
+        }
+
+    # Validate categories
+    for category in post_update.categories:
+        db_category = get_category_by_id(db, category.category_id)
+        if not db_category:
+            return {
+                "success": False,
+                "status_code": status.HTTP_404_NOT_FOUND,
+                "message": CATEGORY_NOT_FOUND,
+            }
+
+    # Validate tags
+    for tag in post_update.tags:
+        db_tag = get_tag_by_id(db, tag.tag_id)
+        if not db_tag:
+            return {
+                "success": False,
+                "status_code": status.HTTP_404_NOT_FOUND,
+                "message": TAG_NOT_FOUND,
+            }
+
+    # Update the post details
+    db_post.title = post_update.title
+    db_post.content = post_update.content
+    db_post.status = post_update.status
+
+    # Update categories
+    db.query(Post_Category).filter(Post_Category.post_id == post_id).delete()
+    for category in post_update.categories:
+        db_post_category = Post_Category(
+            post_id=db_post.id, category_id=category.category_id
+        )
+        db.add(db_post_category)
+
+    # Update tags
+    db.query(Post_Tag).filter(Post_Tag.post_id == post_id).delete()
+    for tag in post_update.tags:
+        db_post_tag = Post_Tag(post_id=db_post.id, tag_id=tag.tag_id)
+        db.add(db_post_tag)
+
+    db.commit()
+    db.refresh(db_post)
+
+    # Create a dictionary with the necessary data
+    post_data = {
+        "id": db_post.id,
+        "title": db_post.title,
+        "content": db_post.content,
+        "status": db_post.status,
+        "user": user,
+        "categories": [
+            get_category_by_id(db, category.category_id)
+            for category in post_update.categories
+        ],
+        "tags": [get_tag_by_id(db, tag.tag_id) for tag in post_update.tags],
+    }
+
+    return {
+        "success": True,
+        "status_code": status.HTTP_200_OK,
+        "message": POST_UPDATED_SUCCESSFULLY,
+        "data": post_data,
+    }
+
+
+def delete_post(db: Session, post_id: int):
+    # Fetch the post by ID
+    db_post = get_post_by_id(db, post_id=post_id)
+
+    if not db_post:
+        return {
+            "success": False,
+            "status_code": status.HTTP_404_NOT_FOUND,
+            "message": POST_NOT_EXIST,
+        }
+
+    # Update categories
+    db.query(Post_Category).filter(Post_Category.post_id == post_id).delete()
+    db.query(Post_Tag).filter(Post_Tag.post_id == post_id).delete()
+    db.delete(db_post)
+    db.commit()
+
+    return {
+        "success": True,
+        "status_code": status.HTTP_200_OK,
+        "message": POST_DELETED_SUCCESSFULLY,
     }

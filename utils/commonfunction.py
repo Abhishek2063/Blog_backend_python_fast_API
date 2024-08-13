@@ -59,3 +59,6 @@ def check_category_contained_in_post_Category_table(db: Session, category_id: in
 
 def get_post_by_title(db: Session, title: str):
     return db.query(Post).filter(Post.title == title).first()
+
+def get_post_by_id(db: Session, post_id: int):
+    return db.query(Post).filter(Post.id == post_id).first()

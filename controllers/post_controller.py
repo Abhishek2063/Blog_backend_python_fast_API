@@ -6,13 +6,23 @@ from middlewares.authentication_middleware import authenticate_user
 from schemas.response_schemas import API_Response
 from utils.messages import SOMETHING_WENT_WRONG
 from utils.APIRouteList import (
+    DELETE_POST_BY_ID,
     GET_ALL_POST_LIST,
     GET_ALL_USER_POST_LIST,
+    GET_POST_BY_ID,
     POST_CREATE_API,
+    UPDATE_POST_BY_ID,
 )
 from schemas.post_schema import PostCreate, PostResponse
 from models.users_model import User
-from services.post_services import create_post, get_all_posts_list, get_user_posts
+from services.post_services import (
+    create_post,
+    delete_post,
+    get_all_posts_list,
+    get_post_details_by_id,
+    get_user_posts,
+    update_post,
+)
 
 
 router = APIRouter()
@@ -145,3 +155,105 @@ def list_post_users(
             success=False,
             message=SOMETHING_WENT_WRONG,
         )
+
+
+@router.get(f"{GET_POST_BY_ID}" + "{post_id}", response_model=API_Response)
+def get_post_by_id_controller(
+    post_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(authenticate_user),  # Ensure user is authenticated
+):
+    if not isinstance(user, User):  # Check if the response is a dict (error)
+        return create_response(
+            status_code=user["status_code"],
+            success=user["success"],
+            message=user["message"],
+        )
+    try:
+        result = get_post_details_by_id(db, post_id)
+        if not result["success"]:
+            return create_response(
+                result["status_code"],
+                result["success"],
+                result["message"],
+            )
+
+        post_response = PostResponse.from_orm(result["data"])
+        return create_response(
+            status_code=result["status_code"],
+            success=result["success"],
+            message=result["message"],
+            data=post_response,
+        )
+    except Exception as e:
+        return create_response(
+            status_code=500,
+            success=False,
+            message=SOMETHING_WENT_WRONG,
+        )
+
+
+@router.put(f"{UPDATE_POST_BY_ID}" + "{post_id}", response_model=API_Response)
+def update_user_role_details(
+    post_id: int,
+    post_update: PostCreate,
+    db: Session = Depends(get_db),
+    user: User = Depends(authenticate_user),
+):
+
+    if not isinstance(user, User):  # Check if the response is a dict (error)
+        return create_response(
+            status_code=user["status_code"],
+            success=user["success"],
+            message=user["message"],
+        )
+    try:
+        result = update_post(db, post_id, post_update)
+        if not result["success"]:
+            return create_response(
+                result["status_code"],
+                result["success"],
+                result["message"],
+            )
+
+        post_response = PostResponse.from_orm(result["data"])
+        return create_response(
+            status_code=result["status_code"],
+            success=result["success"],
+            message=result["message"],
+            data=post_response,
+        )
+    except Exception as e:
+        return create_response(
+            status_code=500,
+            success=False,
+            message=SOMETHING_WENT_WRONG,
+        )
+
+
+@router.delete(f"{DELETE_POST_BY_ID}" + "{post_id}", response_model=API_Response)
+def delete_user_role_by_id_controller(
+    post_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(authenticate_user),
+):
+    if not isinstance(user, User):  # Check if the response is a dict (error)
+        return create_response(
+            status_code=user["status_code"],
+            success=user["success"],
+            message=user["message"],
+        )
+
+    # try:
+    result = delete_post(db, post_id)
+    return create_response(
+        result["status_code"],
+        result["success"],
+        result["message"],
+    )
+    # except Exception as e:
+    #     return create_response(
+    #         status_code=500,
+    #         success=False,
+    #         message=SOMETHING_WENT_WRONG,
+    #     )
