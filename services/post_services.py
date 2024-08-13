@@ -185,3 +185,84 @@ def get_all_posts_list(
             "result": post_responses,
         },
     }
+
+
+def get_user_posts(
+    db: Session,
+    user_id: int,
+    sort_by: str = "title",
+    order: str = "asc",
+    skip: int = 0,
+    limit: int = 10,
+) -> Dict[str, Any]:
+
+    # Fetch the user data
+    user = get_user_by_id(db, user_id=user_id)
+    if not user:
+        return {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": USER_NOT_EXIST,
+        }
+
+    valid_sort_by = ["title", "status"]
+    valid_order = ["asc", "desc"]
+
+    if sort_by not in valid_sort_by:
+        return {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": INVALID_SORT_FIELD,
+        }
+    if order not in valid_order:
+        return {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": INVALID_SORT_ORDER,
+        }
+    sort_column = {
+        "title": Post.title,
+    }.get(sort_by, Post.title)
+
+    order_method = asc if order == "asc" else desc
+
+    query = (
+        db.query(Post)
+        .filter(Post.user_id == user_id)
+        .order_by(order_method(sort_column))
+    )
+
+    total = query.count()
+    post_list = query.offset(skip).limit(limit).all()
+    total_pages = (total + limit - 1) // limit
+    current_page = skip // limit + 1
+
+    post_responses = []
+    for post in post_list:
+        post_response = PostResponse(
+            id=post.id,
+            title=post.title,
+            content=post.content,
+            status=post.status,
+            user=UserResponse.from_orm(post.user),
+            categories=[
+                CategoryResponse.from_orm(pc.category) for pc in post.categories
+            ],
+            tags=[TagResponse.from_orm(pt.tag) for pt in post.tags],
+        )
+        post_responses.append(post_response)
+    return {
+        "success": True,
+        "status_code": 200,
+        "message": POST_LIST_GET_SUCCESSFULLY,
+        "data": {
+            "total": total,
+            "limit": limit,
+            "skip": skip,
+            "sort_by": sort_by,
+            "sort_order": order,
+            "total_pages": total_pages,
+            "current_page": current_page,
+            "result": post_responses,
+        },
+    }

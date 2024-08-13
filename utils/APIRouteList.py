@@ -27,3 +27,5 @@ DELETE_CATEGORY_BY_ID = "/delete_category/"
 
 POST_CREATE_API = "/create/"
 GET_ALL_POST_LIST = "/get_all_post/"
+GET_ALL_USER_POST_LIST = "/get_all_user_post/"
+
