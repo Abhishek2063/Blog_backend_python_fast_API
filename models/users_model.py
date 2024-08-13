@@ -20,9 +20,7 @@ class User(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    posts = relationship(
-        "Post", back_populates="users", cascade="all, delete, delete-orphan"
-    )
+    posts = relationship("Post", back_populates="user")
     comments = relationship(
         "Comment", back_populates="users", cascade="all, delete, delete-orphan"
     )

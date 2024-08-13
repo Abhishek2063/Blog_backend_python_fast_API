@@ -26,3 +26,4 @@ UPDATE_CATEGORY_BY_ID = "/update_category/"
 DELETE_CATEGORY_BY_ID = "/delete_category/"
 
 POST_CREATE_API = "/create/"
+GET_ALL_POST_LIST = "/get_all_post/"

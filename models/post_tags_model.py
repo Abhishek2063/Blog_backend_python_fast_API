@@ -18,5 +18,5 @@ class Post_Tag(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    posts = relationship("Post", back_populates="post_tags")
-    tags = relationship("Tag", back_populates="post_tags")
+    post = relationship("Post", back_populates="tags")
+    tag = relationship("Tag", back_populates="posts")

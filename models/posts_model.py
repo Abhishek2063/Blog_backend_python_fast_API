@@ -20,15 +20,10 @@ class Post(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    users = relationship("User", back_populates="posts")
-    post_categories = relationship(
-        "Post_Category",
-        back_populates="posts",
-        cascade="all, delete, delete-orphan",
-    )
+    user = relationship("User", back_populates="posts")
+    categories = relationship("Post_Category", back_populates="post")
+    tags = relationship("Post_Tag", back_populates="post")
     comments = relationship(
         "Comment", back_populates="posts", cascade="all, delete, delete-orphan"
     )
-    post_tags = relationship(
-        "Post_Tag", back_populates="posts", cascade="all, delete, delete-orphan"
-    )
+

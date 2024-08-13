@@ -16,21 +16,15 @@ class PostCreate(BaseModel):
     tags: Optional[List[PostTagCreate]] = []
     user_id:int
 
-    # @validator("title")
-    # def name_must_contain_only_letters(cls, v):
-    #     if not v.replace(" ", "").isalpha():
-    #         raise ValueError(USER_NAME_MUST_CONTAIN_ONLY_LETTERS)
-    #     return v.title()
-
 
 class PostResponse(BaseModel):
     id: int
     title: str
     content: str
     status: str
-    user_data: UserResponse
-    category_data: CategoryResponse
-    tag_data: TagResponse
+    user: UserResponse
+    categories: List[CategoryResponse] = []
+    tags: List[TagResponse] = []
 
     class Config:
         orm_mode = True

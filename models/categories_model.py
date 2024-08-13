@@ -15,8 +15,4 @@ class Category(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    post_categories = relationship(
-        "Post_Category",
-        back_populates="categories",
-        cascade="all, delete, delete-orphan",
-    )
+    posts = relationship("Post_Category", back_populates="category")

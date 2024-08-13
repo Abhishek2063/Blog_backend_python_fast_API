@@ -14,6 +14,4 @@ class Tag(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    post_tags = relationship(
-        "Post_Tag", back_populates="tags", cascade="all, delete, delete-orphan"
-    )
+    posts = relationship("Post_Tag", back_populates="tag")
