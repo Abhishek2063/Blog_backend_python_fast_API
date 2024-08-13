@@ -24,3 +24,5 @@ GET_ALL_CATEGORY_LIST = "/get_all_category/"
 GET_CATEGORY_BY_ID = "/get_category_by_id/"
 UPDATE_CATEGORY_BY_ID = "/update_category/"
 DELETE_CATEGORY_BY_ID = "/delete_category/"
+
+POST_CREATE_API = "/create/"

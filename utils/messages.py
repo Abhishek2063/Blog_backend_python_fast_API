@@ -67,3 +67,8 @@ CATEGORY_FOUND_SUCCESSFULL = "Category found successfully."
 CATEGORY_UPDATE_SUCCESSFULLY = "Category update successfully"
 CATEGORY_IS_CONNECTED_WITH_USER_TABLE = "Some Post having this particular Category."
 CATEGORY_DELETE_SUCCESSFULLY = "Category delete successfully."
+
+POST_CREATED_SUCCESSFULLY = "Post created successfully."
+POST_NAME_ALREADY_TAKEN = "This post is already created."
+CATEGORY_NOT_FOUND = "Category not found"
+TAG_NOT_FOUND = "Tag not found"

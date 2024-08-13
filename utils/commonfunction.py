@@ -6,6 +6,7 @@ from models.tags_model import Tag
 from models.post_tags_model import Post_Tag
 from models.categories_model import Category
 from models.post_categories_model import Post_Category
+from models.posts_model import Post
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -55,3 +56,6 @@ def get_category_by_id(db: Session, category_id: int):
 
 def check_category_contained_in_post_Category_table(db: Session, category_id: int):
     return db.query(Post_Category).filter(Post_Category.category_id == category_id).first()
+
+def get_post_by_title(db: Session, title: str):
+    return db.query(Post).filter(Post.title == title).first()

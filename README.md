@@ -25,23 +25,24 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - Retrieving all users with sorting and pagination
 - Retrieving user details by ID
 - Update user details(first_name, last_name, role) By ID
-- Update password 
+- Update password
 - Delete a user by ID
 - Create new role
-- Get all roles list with pagination, sorting 
+- Get all roles list with pagination, sorting
 - Get role by ID
 - Update role by ID
 - Delete role by ID
 - Create new tag
-- Get all tags list with pagination, sorting 
+- Get all tags list with pagination, sorting
 - Get tag by ID
 - Update tag by ID
 - Delete tag by ID
 - Create new category
-- Get all categories list with pagination, sorting 
+- Get all categories list with pagination, sorting
 - Get category by ID
 - Update category by ID
 - Delete category by ID
+- Post create
 
 ## Installation
 
@@ -186,7 +187,6 @@ Request Body:
 }
 ```
 
-
 ### Get All User roles list
 
 GET /api/user_role/get_all_role
@@ -238,7 +238,6 @@ Request Body:
     "description" : "Artificial Intelligence related"
 }
 ```
-
 
 ### Get All Tags list
 
@@ -292,7 +291,6 @@ Request Body:
 }
 ```
 
-
 ### Get All categories list
 
 GET /api/category/get_all_category
@@ -332,6 +330,42 @@ DELETE /api/category/delete_category/{category_id}
 Example: http://127.0.0.1:8000/api/category/delete_category/1
 ```
 
+### Create post
+
+POST /api/post/create
+
+Request Body:
+
+```bash
+{
+    "title": "Post 2",
+    "content": "Content 2",
+    "status": "Draft",
+    "user_id": 10,
+    "categories": [
+        {
+            "category_id": 1
+        },
+        {
+            "category_id": 2
+        },
+        {
+            "category_id": 3
+        }
+    ],
+    "tags": [
+        {
+            "tag_id": 10
+        },
+        {
+            "tag_id": 2
+        },
+        {
+            "tag_id": 3
+        }
+    ]
+}
+```
 
 ## Dependencies
 
