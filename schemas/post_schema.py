@@ -6,6 +6,7 @@ from schemas.post_tag_schema import PostTagCreate
 from schemas.user_schemas import UserResponse
 from schemas.category_schema import CategoryResponse
 from schemas.tag_schema import TagResponse
+from schemas.comment_schema import CommentResponse
 
 
 class PostCreate(BaseModel):
@@ -25,6 +26,7 @@ class PostResponse(BaseModel):
     user: UserResponse
     categories: List[CategoryResponse] = []
     tags: List[TagResponse] = []
+    comments : List[CommentResponse] = []
 
     class Config:
         orm_mode = True
