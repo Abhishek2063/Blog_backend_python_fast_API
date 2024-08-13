@@ -244,16 +244,16 @@ def delete_user_role_by_id_controller(
             message=user["message"],
         )
 
-    # try:
-    result = delete_post(db, post_id)
-    return create_response(
-        result["status_code"],
-        result["success"],
-        result["message"],
-    )
-    # except Exception as e:
-    #     return create_response(
-    #         status_code=500,
-    #         success=False,
-    #         message=SOMETHING_WENT_WRONG,
-    #     )
+    try:
+        result = delete_post(db, post_id)
+        return create_response(
+            result["status_code"],
+            result["success"],
+            result["message"],
+        )
+    except Exception as e:
+        return create_response(
+            status_code=500,
+            success=False,
+            message=SOMETHING_WENT_WRONG,
+        )

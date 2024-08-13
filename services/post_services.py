@@ -31,6 +31,8 @@ from typing import List, Dict, Any
 from schemas.user_schemas import UserResponse
 from schemas.category_schema import CategoryResponse
 from schemas.tag_schema import TagResponse
+from schemas.comment_schema import CommentResponse
+from models.comments_model import Comment
 
 
 # create post
@@ -114,6 +116,7 @@ def create_post(db: Session, post_create: PostCreate):
         "user": user,
         "categories": categories,
         "tags": tags,
+        "comments": [],
     }
 
     return {
@@ -173,6 +176,7 @@ def get_all_posts_list(
                 CategoryResponse.from_orm(pc.category) for pc in post.categories
             ],
             tags=[TagResponse.from_orm(pt.tag) for pt in post.tags],
+            comments=[CommentResponse.from_orm(comment) for comment in post.comments],
         )
         post_responses.append(post_response)
     return {
@@ -254,6 +258,7 @@ def get_user_posts(
                 CategoryResponse.from_orm(pc.category) for pc in post.categories
             ],
             tags=[TagResponse.from_orm(pt.tag) for pt in post.tags],
+            comments=[CommentResponse.from_orm(comment) for comment in post.comments],
         )
         post_responses.append(post_response)
     return {
@@ -296,6 +301,9 @@ def get_post_details_by_id(db: Session, post_id: int):
                 CategoryResponse.from_orm(pc.category) for pc in post_details.categories
             ],
             tags=[TagResponse.from_orm(pt.tag) for pt in post_details.tags],
+            comments=[
+                CommentResponse.from_orm(comment) for comment in post_details.comments
+            ],
         ),
     }
 
@@ -373,7 +381,7 @@ def update_post(db: Session, post_id: int, post_update: PostCreate) -> Dict[str,
             get_category_by_id(db, category.category_id)
             for category in post_update.categories
         ],
-        "tags": [get_tag_by_id(db, tag.tag_id) for tag in post_update.tags],
+        "tags": [get_tag_by_id(db, tag.tag_id) for tag in post_update.tags]
     }
 
     return {
@@ -398,6 +406,8 @@ def delete_post(db: Session, post_id: int):
     # Update categories
     db.query(Post_Category).filter(Post_Category.post_id == post_id).delete()
     db.query(Post_Tag).filter(Post_Tag.post_id == post_id).delete()
+    db.query(Comment).filter(Comment.post_id == post_id).delete()
+
     db.delete(db_post)
     db.commit()
 
