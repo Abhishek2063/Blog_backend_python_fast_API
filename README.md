@@ -43,6 +43,8 @@ The Blog Backend with FastAPI project provides a set of APIs to manage users, au
 - Update category by ID
 - Delete category by ID
 - Post create
+- Get all post list
+- Get all post according to users
 
 ## Installation
 
@@ -366,6 +368,26 @@ Request Body:
     ]
 }
 ```
+### Get all post:
+
+GET /api/post/get_all_post
+
+```bash
+Query Parameters: sort_order, sort_by, skip, limit
+
+Example: http://127.0.0.1:8000/api/post/get_all_post/?sort_order=asc&sort_by=title&skip=0&limit=10
+```
+
+### Get all post using user id:
+
+GET /api/post/get_all_user_post/{user_id}
+
+```bash
+Query Parameters: sort_order, sort_by, skip, limit
+
+Example: http://127.0.0.1:8000/api/post/get_all_user_post/{user_id}?sort_order=asc&sort_by=title&skip=0&limit=10
+```
+
 
 ## Dependencies
 
